@@ -5,6 +5,12 @@ body {
     margin-right: auto;
     margin-left: auto;
 }
+a {
+  display: inline-block;
+  background: #69c;
+  color: #fff;
+  padding: 5px 10px;
+}
 button {
     padding: 5px 20px;
     background-color: #337ab7;
