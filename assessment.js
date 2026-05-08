@@ -120,6 +120,26 @@ function finalize() {
     state.topAxis = pickTopAxis(scores);
     state.selectedProject = pickRandomProject(state.topAxis);
     renderResult();
+    submitResult(scores);
+}
+
+const API_BASE = 'http://localhost:8000';
+
+function submitResult(axisScores) {
+    const axis = state.topAxis;
+    const payload = {
+        answers: state.answers,
+        axis_scores: axisScores,
+        top_axis: axis,
+        recommended_project: state.selectedProject,
+        good_point: RESULTS[axis].goodPoint.title,
+        user_name: state.userName,
+    };
+    fetch(`${API_BASE}/api/diagnosis/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    }).catch(() => {}); // fire-and-forget; no UI impact on failure
 }
 
 function renderResult() {
