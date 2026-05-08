@@ -1,0 +1,632 @@
+/* ============================================
+   HAIRCUT 1000 — 美学批評 ZINE スタイル
+   紙ベース / 明朝 / 蛍光ピンク / グレイン
+   ============================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    /* 紙の白とインクの黒、版ズレ的な蛍光ピンク */
+    --paper:        #efe7d7;
+    --paper-deep:   #e3d8c2;
+    --ink:          #15110d;
+    --ink-soft:     #3a322a;
+    --rule:         rgba(21, 17, 13, 0.85);
+    --pink:         #ff2d6f;     /* 蛍光ピンク */
+    --pink-deep:    #e0205a;
+    --kraft:        #c4a574;
+    --highlight:    #ffe55c;     /* 蛍光イエロー */
+
+    --serif:    'Shippori Mincho B1', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+    --display:  'Reggae One', 'Shippori Mincho B1', serif;
+    --mono:     'JetBrains Mono', 'Courier New', monospace;
+    --pixel:    'DotGothic16', monospace;
+}
+
+html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    line-height: 1.85;
+    font-feature-settings: "palt";
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    min-height: 100vh;
+    padding: 0;
+    overflow-x: hidden;
+    /* 微かな紙の縦罫 */
+    background-image:
+        repeating-linear-gradient(
+            to right,
+            transparent 0,
+            transparent 39px,
+            rgba(21, 17, 13, 0.025) 39px,
+            rgba(21, 17, 13, 0.025) 40px
+        );
+}
+
+/* ----- グレイン・ノイズオーバーレイ ----- */
+.grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08, 0 0 0 0 0.07, 0 0 0 0 0.05, 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ----- ページ ----- */
+.page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3.5rem 1.75rem 4rem;
+    position: relative;
+}
+
+/* ============================================
+   MASTHEAD
+   ============================================ */
+.masthead {
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.masthead-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 0.7rem;
+    border-bottom: 1.5px solid var(--rule);
+    margin-bottom: 1.6rem;
+}
+
+.title {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+    position: relative;
+}
+
+.title-jp {
+    display: block;
+    font-size: clamp(2.4rem, 9vw, 4.6rem);
+    color: var(--ink);
+}
+
+.title-and {
+    display: inline-block;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    color: var(--pink);
+    transform: translateX(-0.3em) rotate(-7deg);
+    text-shadow: 1.5px 1.5px 0 var(--ink);
+}
+
+.title-jp:nth-of-type(2) {
+    transform: translateX(0.6em);
+}
+
+.title-en {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    color: var(--ink-soft);
+    margin-top: 0.9rem;
+    padding-left: 0.35em;
+}
+
+.rule {
+    height: 1.5px;
+    background: var(--rule);
+    width: 100%;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.rule::after {
+    content: '◆';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--paper);
+    color: var(--pink);
+    padding: 0 0.6em;
+    font-size: 0.7rem;
+}
+
+.lede {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    line-height: 2;
+    max-width: 38em;
+}
+
+.lede em {
+    font-style: normal;
+    background: linear-gradient(transparent 65%, var(--highlight) 65%);
+    padding: 0 0.1em;
+}
+
+/* ============================================
+   SCREENS
+   ============================================ */
+.screen {
+    display: none;
+    animation: pageIn 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes pageIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   CARD（紙の中の紙）
+   ============================================ */
+.card {
+    background: var(--paper-deep);
+    border: 1.5px solid var(--ink);
+    padding: 2.25rem 1.75rem 2rem;
+    position: relative;
+    margin: 1.75rem 0;
+    box-shadow:
+        4px 4px 0 var(--ink),
+        4px 4px 0 1.5px var(--ink);
+}
+
+.card-tag {
+    display: inline-block;
+    position: absolute;
+    top: -0.65rem;
+    left: 1.25rem;
+    background: var(--paper);
+    padding: 0 0.7rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--ink);
+    text-transform: uppercase;
+}
+
+/* ============================================
+   START SCREEN
+   ============================================ */
+.instruction {
+    font-size: 1rem;
+    line-height: 2;
+    color: var(--ink-soft);
+    margin-bottom: 1.75rem;
+    border-left: 3px solid var(--pink);
+    padding-left: 1rem;
+}
+
+.form-row {
+    margin: 1.75rem 0;
+}
+
+.field-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: var(--ink-soft);
+    margin-bottom: 0.5rem;
+}
+
+#user-name {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--ink);
+    padding: 0.4rem 0;
+    font-family: var(--display);
+    font-size: 1.6rem;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    transition: border-color 0.2s;
+}
+
+#user-name::placeholder {
+    color: var(--paper-deep);
+    filter: brightness(0.85);
+    font-family: var(--display);
+}
+
+#user-name:focus {
+    outline: none;
+    border-color: var(--pink);
+}
+
+.footnote {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    margin-top: 1.2rem;
+    opacity: 0.7;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.primary-button,
+.ghost-button,
+.tweet-button {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.7em;
+    cursor: pointer;
+    font-family: var(--display);
+    transition: all 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+    text-decoration: none;
+}
+
+.primary-button {
+    width: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1.5px solid var(--ink);
+    padding: 1.05rem 1.5rem;
+    font-size: 1.35rem;
+    justify-content: center;
+    box-shadow: 5px 5px 0 var(--pink);
+    margin-top: 0.5rem;
+}
+
+.primary-button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--pink);
+}
+
+.primary-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--pink);
+}
+
+.btn-num {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    color: var(--pink);
+}
+
+.primary-button .btn-num { color: var(--pink); }
+
+.ghost-button {
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    margin-top: 1.2rem;
+}
+
+.ghost-button:hover {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.ghost-button:hover .btn-num {
+    color: var(--highlight);
+}
+
+/* ============================================
+   QUESTION
+   ============================================ */
+.q-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1.5px solid var(--rule);
+}
+
+.q-num {
+    font-family: var(--display);
+    font-size: 2.2rem;
+    color: var(--ink);
+    line-height: 1;
+}
+
+.q-num span { color: var(--pink); }
+
+.q-of {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    margin-right: 0.5rem;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--paper-deep);
+    border: 1px solid var(--ink);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--pink);
+    transition: width 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.question-text {
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 4.8vw, 2rem);
+    line-height: 1.6;
+    margin-bottom: 2.25rem;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    position: relative;
+    padding-left: 1.5em;
+    text-indent: -1em;
+}
+
+.question-text::before {
+    content: '「 ';
+    color: var(--pink);
+    font-weight: 700;
+}
+
+.question-text::after {
+    content: ' 」';
+    color: var(--pink);
+    font-weight: 700;
+}
+
+.choices {
+    display: flex;
+    flex-direction: column;
+}
+
+.choice-button {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--rule);
+    padding: 1.1rem 0.5rem;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    text-align: left;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.18s;
+    position: relative;
+}
+
+.choice-button:last-child {
+    border-bottom: 1px solid var(--rule);
+}
+
+.choice-button::before {
+    content: counter(choice, decimal-leading-zero);
+    counter-increment: choice;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    min-width: 2.5em;
+}
+
+.choices { counter-reset: choice; }
+
+.choice-button:hover {
+    background: var(--ink);
+    color: var(--paper);
+    padding-left: 1.3rem;
+}
+
+.choice-button:hover::before {
+    color: var(--pink);
+}
+
+.choice-button::after {
+    content: '→';
+    margin-left: auto;
+    font-family: var(--mono);
+    color: var(--pink);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all 0.18s;
+}
+
+.choice-button:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--highlight);
+}
+
+/* ============================================
+   RESULT
+   ============================================ */
+.verdict-head {
+    text-align: center;
+    margin: 2rem 0 1rem;
+}
+
+.verdict-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--pink);
+    margin-bottom: 0.8rem;
+}
+
+.verdict-title {
+    font-family: var(--display);
+    font-size: clamp(2rem, 7vw, 3rem);
+    letter-spacing: 0.4em;
+    color: var(--ink);
+    font-weight: 400;
+    text-indent: 0.4em;
+}
+
+.result-title {
+    font-family: var(--display);
+    font-size: clamp(2.2rem, 8vw, 3.4rem);
+    color: var(--ink);
+    margin: 1rem 0 1.2rem;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+}
+
+.result-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.06em;
+    height: 0.32em;
+    background: var(--pink);
+    z-index: -1;
+    transform: rotate(-1deg);
+}
+
+.result-description {
+    font-size: 1.05rem;
+    line-height: 2.05;
+    color: var(--ink);
+}
+
+.recommend-card {
+    background: var(--paper);
+    border: 1.5px solid var(--pink-deep);
+    box-shadow:
+        4px 4px 0 var(--pink-deep),
+        8px 8px 0 var(--ink);
+}
+
+.recommend-card .card-tag {
+    background: var(--paper);
+    color: var(--pink-deep);
+    border: 1px solid var(--pink-deep);
+}
+
+.axis-tag {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--ink-soft);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+}
+
+.result-actions {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.tweet-button {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.85rem 1.6rem;
+    font-size: 0.95rem;
+    border: 1.5px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--pink);
+}
+
+.tweet-button:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--pink);
+}
+
+/* ============================================
+   COLOPHON
+   ============================================ */
+.colophon {
+    margin-top: 5rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.12em;
+    line-height: 2;
+}
+
+.colophon-rule {
+    height: 1.5px;
+    background: var(--rule);
+    width: 25%;
+    margin: 0 auto 1.5rem;
+}
+
+.colophon a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1.5px dotted var(--ink-soft);
+    padding-bottom: 1px;
+    transition: all 0.2s;
+}
+
+.colophon a:hover {
+    color: var(--pink-deep);
+    border-color: var(--pink-deep);
+}
+
+.colophon-meta {
+    margin-top: 0.6rem;
+    opacity: 0.7;
+    font-size: 0.7rem;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+.fade-in {
+    animation: fadeIn 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 540px) {
+    .page { padding: 2.25rem 1.25rem 3rem; }
+    .card { padding: 2rem 1.25rem 1.5rem; }
+    .card-tag { left: 0.9rem; font-size: 0.65rem; }
+    .question-text { padding-left: 1.2em; }
+    .lede { font-size: 0.92rem; }
+    .masthead-row { font-size: 0.62rem; gap: 0.4rem; }
+    .ed-issn { display: none; }
+}
+
+@media (max-width: 380px) {
+    .title-jp { font-size: 2.1rem; }
+    .verdict-title { letter-spacing: 0.25em; }
+}

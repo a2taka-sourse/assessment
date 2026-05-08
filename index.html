@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:url" content="https://a2taka-sourse.github.io/assessment/" />
+    <meta property="og:title" content="あなたのいいところ＋おすすめ企画診断" />
+    <meta property="og:description" content="美学7軸で診断し、いいところとおすすめ企画を返します。" />
+    <title>HAIRCUT 1000 — 美学診断 NO.01</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;700;900&family=Reggae+One&family=DotGothic16&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assessment.css" />
+</head>
+
+<body>
+    <!-- 紙のグレイン・ノイズオーバーレイ -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <main class="page">
+
+        <header class="masthead">
+            <div class="masthead-row">
+                <span class="ed-no">VOL. 01</span>
+                <span class="ed-date">2026 / 美学批評</span>
+                <span class="ed-issn">ISSN—H1000</span>
+            </div>
+            <h1 class="title">
+                <span class="title-jp">いいところ</span>
+                <span class="title-and">＋</span>
+                <span class="title-jp">おすすめ企画</span>
+                <span class="title-en">A DIAGNOSIS OF YOUR AESTHETICS</span>
+            </h1>
+            <div class="rule"></div>
+            <p class="lede">
+                ７問。<wbr>あなたの美学を Haircut1000 の７軸で読み解き、<br>
+                その軸に紐づく <em>いいところ</em> と <em>企画</em> を返す。
+            </p>
+        </header>
+
+        <!-- スタート -->
+        <section id="start-screen" class="screen active">
+            <div class="card start-card">
+                <span class="card-tag">— PROLOGUE —</span>
+                <p class="instruction">
+                    所要 60 秒程度。<br>
+                    名前は出してもいいし、出さなくてもいい。
+                </p>
+                <div class="form-row">
+                    <label class="field-label" for="user-name">NAME / 名 前</label>
+                    <input type="text" id="user-name" maxlength="20" placeholder="——" autocomplete="off" />
+                </div>
+                <button id="start-button" class="primary-button">
+                    <span class="btn-num">▶</span>
+                    <span class="btn-label">診断をはじめる</span>
+                </button>
+                <p class="footnote">※回答は端末から外に出ません（現バージョン）。</p>
+            </div>
+        </section>
+
+        <!-- 質問 -->
+        <section id="question-screen" class="screen">
+            <div class="q-meta">
+                <span class="q-num">Q.<span id="progress-current">01</span></span>
+                <span class="q-of">／<span id="progress-total">07</span></span>
+                <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+            </div>
+            <h2 id="question-text" class="question-text"></h2>
+            <div id="choices" class="choices"></div>
+        </section>
+
+        <!-- 結果 -->
+        <section id="result-screen" class="screen">
+            <div class="verdict-head">
+                <span class="verdict-tag">— VERDICT —</span>
+                <h2 class="verdict-title">診 断 結 果</h2>
+                <div class="rule"></div>
+            </div>
+
+            <article class="card result-card">
+                <span class="card-tag">— あなたのいいところ —</span>
+                <h3 id="good-point-title" class="result-title"></h3>
+                <p id="good-point-description" class="result-description"></p>
+            </article>
+
+            <article class="card recommend-card">
+                <span class="card-tag">— おすすめの企画 —</span>
+                <p id="project-text" class="result-description"></p>
+                <p id="axis-name" class="axis-tag"></p>
+                <button id="reroll-button" class="ghost-button">
+                    <span class="btn-num">↻</span>
+                    <span class="btn-label">企画をもう一個ひく</span>
+                </button>
+            </article>
+
+            <div class="result-actions">
+                <div id="tweet-area"></div>
+                <button id="restart-button" class="ghost-button">
+                    <span class="btn-num">↺</span>
+                    <span class="btn-label">もう一度診断する</span>
+                </button>
+            </div>
+        </section>
+
+        <footer class="colophon">
+            <div class="colophon-rule"></div>
+            <p>
+                <a href="https://www.youtube.com/@ShikaBaton/videos" target="_blank" rel="noopener">しかバトン-今泉影狼-【2000人目標】</a>
+            </p>
+            <p class="colophon-meta">
+                Edited & Coded by a2taka — 美学批評 第１号（PROTOTYPE）
+            </p>
+        </footer>
+
+    </main>
+
+    <script src="questions.js"></script>
+    <script src="results.js"></script>
+    <script src="assessment.js"></script>
+</body>
+
+</html>
